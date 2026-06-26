@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RepoMind — Workspace Chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Marked Markdown Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+    <link rel="stylesheet" href="./static_files/chat.css" />
+  </head>
+
+  <body>
+    <!-- Ambient light blobs -->
+    <div class="ambient-glows">
+      <div class="glow-blob glow-galaxy"></div>
+    </div>
+    <div class="vignette"></div>
+
+    <!-- Cosmic Constellation Galaxy Canvas -->
+    <canvas id="galaxyCanvas"></canvas>
+
+    <div class="scene-wrapper">
+      <header>
+        <a href="index.html" class="logo">
+          <div class="logo-icon">M</div>
+          Repo<span>Mind</span>
+        </a>
+        <div class="nav-actions">
+          <button
+            class="nav-btn"
+            onclick="clearSessionQueries()"
+            style="background: none"
+          >
+            New Session
+          </button>
+          <a href="analyze.html" class="nav-btn">Ingestion Hub</a>
+          <a href="login.html" class="nav-btn" id="headerAuthBtn">Sign In</a>
+        </div>
+      </header>
+
+      <!-- Void telemetry tracking -->
+      <div class="galaxy-telemetry">
+        <div class="telemetry-node">
+          <span class="telemetry-indicator"></span>
+          <span>SCAN STATUS: ACTIVE</span>
+        </div>
+        <div
+          style="font-size: 10px; color: var(--muted); margin-top: 4px"
+          id="sidebarLanguage"
+        >
+          Detecting AST structure...
+        </div>
+      </div>
+
+      <!-- LEFT SIDE: Response Dossier Console -->
+      <main class="dossier-panel hidden" id="dossierPanel">
+        <div class="dossier-header">
+          <div class="dossier-header-title">Response Console</div>
+          <div class="dossier-question-preview" id="dossierQuestionPreview">
+            No Query Active
+          </div>
+        </div>
+
+        <!-- Dossier Body Content -->
+        <div class="dossier-body" id="dossierBody">
+          <p
+            style="
+              color: var(--muted);
+              font-family: var(--mono);
+              font-size: 12.5px;
+            "
+          >
+            Cognitive Galaxy loaded. Submit questions on the right to compile
+            analysis reports.
+          </p>
+        </div>
+
+        <!-- Dossier referenced modules -->
+        <div class="dossier-citations" id="dossierCitations">
+          <div class="citations-label">Referenced Modules</div>
+          <div class="pill-cloud" id="relevantFilesCloud">
+            <span
+              style="
+                font-size: 11px;
+                color: var(--muted);
+                font-family: var(--mono);
+              "
+              >No modules loaded in context.</span
+            >
+          </div>
+        </div>
+      </main>
+
+      <!-- RIGHT SIDE: Inspector Panel (Question list + prompts) -->
+      <aside class="inspector-panel">
+        <div class="inspector-header">
+          <div>
+            <div class="inspector-title" id="sidebarRepoName">Repository</div>
+            <div class="inspector-subtitle" id="topbarSub">
+              username/repository
+            </div>
+          </div>
+          <div class="inspector-stars" id="metaStars">⭐ —</div>
+        </div>
+
+        <!-- Question List Container -->
+        <div class="query-list-container" id="queryListContainer"></div>
+
+        <!-- Prompt Input controls -->
+        <div class="input-block">
+          <div class="input-wrapper">
+            <textarea
+              id="questionInput"
+              class="console-input"
+              placeholder="Search code module details…"
+              rows="1"
+              onkeydown="handleKey(event)"
+            ></textarea>
+          </div>
+          <button class="btn-gradient" id="submitBtn" onclick="handleChat()">
+            Analyze Module
+          </button>
+          <div class="limits-bar">
+            <span id="limitUserPlan">Guest Access</span>
+            <span id="limitUsageFraction">0 / 5 queries</span>
+          </div>
+          <div
+            id="getMoreLimitsContainer"
+            style="display: none; text-align: center; margin-top: 10px"
+          >
+            <a
+              href="signup.html"
+              style="
+                font-family: var(--mono);
+                font-size: 10px;
+                color: var(--amber);
+                text-decoration: none;
+                font-weight: bold;
+                border: 1px dashed var(--amber);
+                padding: 5px 12px;
+                border-radius: 8px;
+                display: inline-block;
+                transition: all 0.2s;
+              "
+              onmouseover="this.style.background = 'var(--amber-dim)'"
+              onmouseout="this.style.background = 'none'"
+            >
+              ✨ Get More Limits
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Code Viewer Split (Slides in over the Dossier panel) -->
+      <div class="editor-pane" id="editorPane">
+        <div class="editor-header">
+          <div class="editor-title" id="editorFilename">main.py</div>
+          <button class="editor-close" onclick="closeEditor()">✕</button>
+        </div>
+        <div class="editor-workspace">
+          <div class="editor-gutter" id="editorGutter"></div>
+          <div class="editor-code" id="editorCodeBlock"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cinematic Ingestion Scanner Overlay -->
+    <div class="ingest-overlay" id="ingestOverlay">
+      <div class="scanner-box">
+        <div class="scanner-title">Initializing Index Space</div>
+        <div class="scanner-subtitle">
+          Compiling target codebase elements...
+        </div>
+
+        <div class="stage-list">
+          <div class="stage-item pending" id="stage_detect">
+            <span class="stage-bullet"></span>
+            <span>Repository detected</span>
+          </div>
+          <div class="stage-item pending" id="stage_clone">
+            <span class="stage-bullet"></span>
+            <span>Cloning codebase nodes</span>
+          </div>
+          <div class="stage-item pending" id="stage_read">
+            <span class="stage-bullet"></span>
+            <span>Reading README & package dependencies</span>
+          </div>
+          <div class="stage-item pending" id="stage_chunk">
+            <span class="stage-bullet"></span>
+            <span>Chunking logic structures</span>
+          </div>
+          <div class="stage-item pending" id="stage_embed">
+            <span class="stage-bullet"></span>
+            <span>Generating vector coordinates</span>
+          </div>
+          <div class="stage-item pending" id="stage_ready">
+            <span class="stage-bullet"></span>
+            <span>Workspace stabilizing</span>
+          </div>
+        </div>
+
+        <div class="scanner-telemetry" id="scanTelemetry">
+          repomind@pipeline:~$ boot indexer
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast">
+      <span id="toastText"></span>
+    </div>
+
+    <!-- Main logic scripts -->
+    <script src="./static_files/chat.js"></script>
+  </body>
+</html>

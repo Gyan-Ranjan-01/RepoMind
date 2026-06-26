@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RepoMind — Privacy Policy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./static_files/privacy.css">
+  </head>
+  <body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <header>
+      <a href="index.html" class="logo">
+        <div class="logo-icon">M</div>
+        Repo<span>Mind</span>
+      </a>
+      <div class="nav-pills">
+        <a href="index.html" class="npill">Portal Home</a>
+      </div>
+    </header>
+
+    <main class="page">
+      <div class="card">
+        <div class="card-top">
+          <h1 class="card-title">Privacy Policy</h1>
+        </div>
+
+        <div class="card-body">
+          <h2 class="section-title">1. Data Ingestion & Code Parsing</h2>
+          <p class="section-text">
+            RepoMind indexes public GitHub repositories. When you submit a URL,
+            the system clones files transiently to parse logic boundaries. Raw
+            code is chunked and vectorized; we do not store full code documents
+            permanently.
+          </p>
+
+          <h2 class="section-title">2. Vectors & Semantic Memory</h2>
+          <p class="section-text">
+            Vector embeddings representing your codebase structures are stored
+            in a secure instance of a Qdrant vector store. These are tagged and
+            associated with your workspace session token and are deleted
+            periodically to protect space.
+          </p>
+
+          <h2 class="section-title">3. Account Metadata</h2>
+          <p class="section-text">
+            For registered accounts, we store only your email address and login
+            timestamps to verify usage bounds and session scopes. For guest
+            users, a transient day token checks query limits. We do not sell or
+            monetize personal metadata.
+          </p>
+
+          <h2 class="section-title">4. Third-Party Connections</h2>
+          <p class="section-text">
+            Generative completions and semantic routing query services are
+            processed using Google Gemini neural models. We follow zero-data
+            retention APIs where model providers do not train on code context
+            blocks sent through queries.
+          </p>
+
+          <a href="index.html" class="back-btn">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Return to Portal
+          </a>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

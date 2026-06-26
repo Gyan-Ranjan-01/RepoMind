@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RepoMind — Analyze Codebase</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./static_files/analyze.css" />
+  </head>
+  <body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <header>
+      <a href="index.html" class="logo">
+        <div class="logo-icon">M</div>
+        Repo<span>Mind</span>
+      </a>
+      <div class="nav-pills" id="authNav"></div>
+    </header>
+
+    <main class="page">
+      <div class="card">
+        <div class="card-top">
+          <div class="card-eyebrow">
+            <span class="card-eyebrow-dot"></span> Pipeline Setup
+          </div>
+          <h1 class="card-title">Analyze Repository</h1>
+          <div class="card-sub">
+            Index your public GitHub codebase. RepoMind reads files, maps
+            functions, and extracts internal dependency flows into Qdrant
+            vectors.
+          </div>
+        </div>
+
+        <div class="card-body">
+          <label class="input-label" for="repoUrl">GitHub Codebase URL</label>
+          <div class="input-wrap">
+            <span class="input-icon">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                ></path>
+              </svg>
+            </span>
+            <input
+              type="url"
+              id="repoUrl"
+              class="repo-input"
+              placeholder="https://github.com/username/project"
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </div>
+
+          <!-- Repository Preview Card -->
+          <div class="repo-preview-card" id="repoPreviewCard">
+            <div class="repo-preview-header">
+              <img
+                class="repo-preview-avatar"
+                id="repoAvatar"
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d97706' stroke-width='2'%3E%3Cpath d='M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22'%3E%3C/path%3E%3C/svg%3E"
+                alt="Avatar"
+              />
+              <div class="repo-preview-info">
+                <div class="repo-preview-title" id="repoTitle">—</div>
+                <div class="repo-preview-owner" id="repoOwner">—</div>
+              </div>
+            </div>
+            <div class="repo-preview-grid">
+              <div class="repo-preview-stat">
+                <span class="repo-preview-stat-label">Primary Language</span>
+                <span class="repo-preview-stat-val" id="repoLang">—</span>
+              </div>
+              <div class="repo-preview-stat">
+                <span class="repo-preview-stat-label">Stars</span>
+                <span class="repo-preview-stat-val" id="repoStars">—</span>
+              </div>
+              <div class="repo-preview-stat">
+                <span class="repo-preview-stat-label">Visibility</span>
+                <span class="repo-preview-stat-val" id="repoVis">—</span>
+              </div>
+              <div class="repo-preview-stat">
+                <span class="repo-preview-stat-label">Last Commit Update</span>
+                <span class="repo-preview-stat-val" id="repoUpdated">—</span>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-analyze" id="analyzeBtn" onclick="handleIngest()">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            Analyze & Index Workspace
+          </button>
+
+          <!-- Terminal Progress Logger -->
+          <div class="terminal-container" id="terminalContainer">
+            <div class="terminal-header">
+              <div class="terminal-dot red"></div>
+              <div class="terminal-dot yellow"></div>
+              <div class="terminal-dot green"></div>
+              <div class="terminal-title">repomind@pipeline:~$</div>
+            </div>
+            <div class="terminal-body" id="terminalBody">
+              <!-- Dynamically populated terminal lines -->
+            </div>
+          </div>
+
+          <div class="info-box">
+            <span class="info-icon">💡</span>
+            <div class="info-text">
+              Supports <code>.py</code>, <code>.js</code>, <code>.ts</code>,
+              <code>.jsx</code>, <code>.tsx</code>, <code>.java</code>,
+              <code>.cpp</code>, and <code>.md</code> code files. Repositories
+              must be public.
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div class="toast" id="toast">
+      <span id="toastIcon"></span>
+      <span id="toastText"></span>
+    </div>
+
+    <script src="./static_files/analyze.js"></script>
+  </body>
+</html>
