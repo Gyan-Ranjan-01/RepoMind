@@ -96,6 +96,7 @@ mongo_client = MongoClient(os.environ["MONGODB_URL"])
 db = mongo_client["repomind"]
 users_col = db["users"]
 usage_col = db["usage"]
+repos_col = db["repos"]
 
 bearer_scheme = HTTPBearer(auto_error=False)
 
@@ -450,6 +451,16 @@ def ingest(req: IngestRequest, user=Depends(get_current_user)):
         if len(chunks)>300:
             raise HTTPException(status_code=400, detail='The Repo is too large, try with a smaller repo.')
         embed_and_store(chunks, collection)
+        repos_col.update_one(
+            {"collection": collection},      
+            {"$set": {
+                "collection": collection,
+                "repo_url": repo_url,
+                "chunk_count": len(chunks),
+                "indexed_at": datetime.now(timezone.utc)
+            }},
+            upsert=True  
+        )
         if user:
             increment_usage(user["_id"], "ingest_count")
         return {
@@ -671,3 +682,11 @@ async def google_callback(code:str):
 
     token = create_token(email)
     return RedirectResponse(f"{FRONTEND_URL}/chat.html?token={token}")
+
+@app.get("/repos")
+def list_repos():
+    repos = list(repos_col.find(
+        {},
+        {"_id": 0, "collection": 1, "repo_url": 1, "chunk_count": 1}
+    ))
+    return {"repos": repos}
