@@ -1,4 +1,4 @@
-const API_BASE = "https://repomind-pxft.onrender.com/";
+const API_BASE = "https://repomind-pxft.onrender.com";
 let toastTimer = null;
 let currentPreviewUrl = "";
 

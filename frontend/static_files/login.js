@@ -1,4 +1,4 @@
-const API_BASE = "https://repomind-pxft.onrender.com/";
+const API_BASE = "https://repomind-pxft.onrender.com";
 
 // Token catch redirect
 const urlParams = new URLSearchParams(window.location.search);
