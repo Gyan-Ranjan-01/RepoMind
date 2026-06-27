@@ -71,7 +71,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[os.environ.get("FRONTEND_URL", "http://localhost:5500")],
     allow_methods=['*'],
-    allow_headers=['*']
+    allow_headers=['*'],
+    allow_credentials=True 
 )
 
 #singletons
@@ -249,8 +250,7 @@ def build_chunk(file_paths : list[Path]):
             print(f"Failed to process {fp}: {e}") 
     return all_chunks
 
-def embed_and_store(chunks:list, collection : str, repo_url):
-    collection = collection_name_from_url(repo_url)
+def embed_and_store(chunks:list, collection : str):
     if qdrant_client.collection_exists(collection):
         return QdrantVectorStore.from_existing_collection(
             embedding = embedding_engine,
