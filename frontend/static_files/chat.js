@@ -6,7 +6,7 @@ if (urlToken) {
   window.history.replaceState({}, document.title, window.location.pathname);
 }
 
-const API_BASE = "http://localhost:8000";
+const API_BASE = "https://repomind-pxft.onrender.com/";
 let repoUrl = sessionStorage.getItem("repomind_url") || "";
 let isStreaming = false;
 
