@@ -18,6 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
         <a href="signup.html" style="border-color: var(--amber); color: var(--amber);" class="npill">Sign Up</a>
       `;
   }
+
+  loadPreIndexedRepos();
 });
 
 function logout() {
@@ -368,3 +370,38 @@ function showToast(type, icon, text) {
 document.getElementById("repoUrl").addEventListener("keydown", (e) => {
   if (e.key === "Enter") handleIngest();
 });
+
+// pre-indexed repos
+
+function loadPreIndexedRepos() {
+  const grid = document.getElementById("preindexedGrid");
+  if (!grid) return;
+
+  const REPOS = [
+    { owner: "karpathy",          name: "micrograd", url: "https://github.com/karpathy/micrograd" },
+    { owner: "karpathy",          name: "minGPT",    url: "https://github.com/karpathy/minGPT" },
+    { owner: "Gyan-Ranjan-01",    name: "DocOnCall",  url: "https://github.com/Gyan-Ranjan-01/DocOnCall" },
+    { owner: "Gyan-Ranjan-01",    name: "sweetsuite", url: "https://github.com/Gyan-Ranjan-01/sweetsuite" },
+  ];
+
+  grid.innerHTML = REPOS.map(repo => `
+    <div class="preindexed-card" onclick="selectPreIndexed('${repo.url}')">
+      <div class="preindexed-card-top">
+        <img
+          class="preindexed-avatar"
+          src="https://github.com/${repo.owner}.png?size=32"
+          alt="${repo.owner}"
+          onerror="this.style.display='none'"
+        />
+        <div class="preindexed-name">${repo.owner}/<strong>${repo.name}</strong></div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function selectPreIndexed(url) {
+  const input = document.getElementById("repoUrl");
+  input.value = url;
+  input.dispatchEvent(new Event("input"));
+  setTimeout(() => handleIngest(), 500);
+}
