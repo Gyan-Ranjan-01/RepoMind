@@ -20,6 +20,9 @@ def ingest(req: IngestRequest, user=Depends(get_current_user)):
 
     if qdrant_client.collection_exists(collection):
         if not repos_col.find_one({"collection": collection}):
+            clone_repo(repo_url, target_dir)
+            files = path_and_filter_repo(target_dir)
+            chunks = build_chunk(files)
             repos_col.insert_one({
                 "collection": collection,
                 "repo_url": repo_url,
