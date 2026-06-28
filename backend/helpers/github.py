@@ -27,8 +27,8 @@ def path_and_filter_repo(base_dir: str):
 def split_file(file_path: Path, content: str):
     ext = file_path.suffix.lower()
     if ext in EXTENSION_TO_LANG:
-        splitter = RecursiveCharacterTextSplitter(
-            Language=EXTENSION_TO_LANG[ext], chunk_size=600, chunk_overlap=80)
+        splitter = RecursiveCharacterTextSplitter.from_language(
+            EXTENSION_TO_LANG[ext], chunk_size=600, chunk_overlap=80)
     else:
         splitter = RecursiveCharacterTextSplitter(
             chunk_size=600, chunk_overlap=80, separators=['\n\n', '\n', ' ', ''])
