@@ -19,6 +19,7 @@ def chat(req: ChatRequest, user=Depends(get_current_user)):
     if not question:
         raise HTTPException(status_code=400, detail="Question can't be empty")
 
+    print(question)
     collection = collection_name_from_url(repo_url)
     if not qdrant_client.collection_exists(collection):
         raise HTTPException(status_code=404, detail="Repo not indexed yet. Run /ingest first.")
