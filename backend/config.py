@@ -16,7 +16,7 @@ BACKEND_URL = os.environ.get("BACKEND_URL", "http://localhost:8000")
 
 GUEST_DAILY_CHAT = 5
 USER_DAILY_CHAT = 10
-USER_DAILY_INGEST = 10
+USER_DAILY_INGEST = 1
 
 IGNORED_DIRS = {'.git', 'node_modules', 'venv', '__pycache__', 'build', 'dist'}
 ALLOWED_EXTENSIONS = {'.py', '.js', '.ts', '.jsx', '.tsx', '.cpp', '.h', '.java', '.md'}

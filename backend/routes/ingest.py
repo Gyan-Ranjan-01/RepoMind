@@ -19,6 +19,13 @@ def ingest(req: IngestRequest, user=Depends(get_current_user)):
     collection = collection_name_from_url(repo_url)
 
     if qdrant_client.collection_exists(collection):
+        if not repos_col.find_one({"collection": collection}):
+            repos_col.insert_one({
+                "collection": collection,
+                "repo_url": repo_url,
+                "chunk_count": len(chunks),
+                "indexed_at": datetime.now(timezone.utc)
+            })
         return {'status': 'cached', 'collection': collection, 'message': 'Repo already indexed. Ready to chat'}
 
     if not user:
