@@ -381,7 +381,7 @@ function loadPreIndexedRepos() {
     { owner: "karpathy",          name: "micrograd", url: "https://github.com/karpathy/micrograd" },
     { owner: "karpathy",          name: "minGPT",    url: "https://github.com/karpathy/minGPT" },
     { owner: "Gyan-Ranjan-01",    name: "DocOnCall",  url: "https://github.com/Gyan-Ranjan-01/DocOnCall" },
-    { owner: "Gyan-Ranjan-01",    name: "sweetsuite", url: "https://github.com/Gyan-Ranjan-01/sweetsuite" },
+    { owner: "Gyan-Ranjan-01",    name: "sweetsuite", url: "https://github.com/postmanlabs/httpbin" },
   ];
 
   grid.innerHTML = REPOS.map(repo => `
