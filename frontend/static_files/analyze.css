@@ -583,19 +583,6 @@ header {
   }
 }
 
-@media (max-width: 600px) {
-  header {
-    padding: 0 20px;
-  }
-  .card-top,
-  .card-body {
-    padding: 24px;
-  }
-  .repo-preview-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* preindexed section */
 
 .preindexed-section {
@@ -641,6 +628,7 @@ header {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
 }
 
 .preindexed-avatar {
@@ -659,6 +647,7 @@ header {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .preindexed-name strong {
@@ -675,4 +664,38 @@ header {
   border: 1px solid rgba(217, 119, 6, 0.2);
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 0 16px;
+  }
+  .logo {
+    font-size: 15px;
+  }
+  .page {
+    padding: 80px 12px 40px;
+  }
+  .card-top,
+  .card-body {
+    padding: 24px 16px;
+  }
+  .repo-preview-grid {
+    grid-template-columns: 1fr;
+  }
+  .preindexed-label {
+    justify-content: center;
+  }
+  .preindexed-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .preindexed-card {
+    max-width: 340px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .terminal-container {
+    display: none !important;
+  }
 }

@@ -709,16 +709,39 @@ footer {
 }
 @media (max-width: 768px) {
   header {
-    padding: 0 20px;
+    padding: 0 16px;
+  }
+  .logo {
+    font-size: 15px;
   }
   .nav-pills .npill:not(:last-child) {
     display: none;
   } /* Hide all but auth button on mobile */
+  .hero {
+    padding: 100px 16px 40px;
+    gap: 24px;
+  }
+  .hero-visual {
+    display: none;
+  }
+  .tagline {
+    margin-bottom: 32px;
+  }
+  .bento-section {
+    padding: 60px 16px;
+  }
   .bento-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
   .bento-large {
     grid-column: span 1;
+  }
+  .bento-card {
+    padding: 24px;
+  }
+  .workflow {
+    padding: 60px 16px;
   }
   .step {
     flex-direction: column;
@@ -726,6 +749,15 @@ footer {
   }
   .step-container::before {
     left: 32px;
+  }
+  .step-content {
+    padding: 24px;
+  }
+  .cta-section {
+    padding: 60px 16px;
+  }
+  .cta-card {
+    padding: 40px 20px;
   }
   footer {
     flex-direction: column;
